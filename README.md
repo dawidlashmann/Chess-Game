@@ -5,7 +5,7 @@ The game itself is a fully functional chess game, intended to work just like the
 It is worth noting, that en passant is not implemented yet, but everything besides that should work just fine.
 
 The chess engine currently functions as a random, legal move generator, but I am planning on advancing it in the future with various algorithms.
-Additionaly I am planning on build a GUI using SFML/OpenGL.
+The game is 100% inside a terminal, but I am planning on build a GUI using SFML/OpenGL.
 
 The code is strictly OOP as I wanted to better myself in it.
 
