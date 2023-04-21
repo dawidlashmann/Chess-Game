@@ -1,0 +1,6 @@
+en passant
+
+draw by repetition 
+    en passant and rochade isn't counted in (fuck it)
+
+engine not defining legal moves during check
