@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <utility>
-#include <memory>
+#include <SFML/Graphics.hpp>
 
 enum color
 {
@@ -25,7 +25,6 @@ class piece
 {
 public:
     piece();
-    piece(int a, int b, char c);
     piece(int, int, color, char);
 
     virtual bool move(std::pair<int, int>, color) = 0;

@@ -1,7 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "piece.h"
 #include "pawn.h"
 #include "rook.h"
 #include "bishop.h"

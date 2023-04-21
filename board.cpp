@@ -7,7 +7,7 @@ chess_board::chess_board()
         std::vector<std::shared_ptr<piece>> temp_column;
         for (int row = 0; row < 8; row++)
         {
-            std::shared_ptr<blank> temp_blank = std::make_shared<blank>(column, row, ' ');
+            std::shared_ptr<blank> temp_blank = std::make_shared<blank>(column, row, empty, ' ');
             temp_column.push_back(temp_blank);
         }
         board.push_back(temp_column);
@@ -106,6 +106,6 @@ void chess_board::swapTiles(std::pair<int, int> curr_tile, std::pair<int, int> t
 {
     board[target_tile.first][target_tile.second] = board[curr_tile.first][curr_tile.second];
     board[target_tile.first][target_tile.second]->current_tile = target_tile;
-    board[curr_tile.first][curr_tile.second] = std::make_shared<blank>(curr_tile.first, curr_tile.second, ' ');
+    board[curr_tile.first][curr_tile.second] = std::make_shared<blank>(curr_tile.first, curr_tile.second, empty, ' ');
     board[target_tile.first][target_tile.second]->moved = 1;
 }

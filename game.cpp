@@ -517,7 +517,7 @@ bool game::check_(std::pair<int, int> current_tile, std::pair<int, int> target_t
     }
     std::shared_ptr<piece> current_tile_copy = (*game_board)[current_tile];
     std::shared_ptr<piece> target_tile_copy = (*game_board)[target_tile];
-    (*game_board)[current_tile] = std::make_shared<blank>(current_tile.first, current_tile.second, ' ');
+    (*game_board)[current_tile] = std::make_shared<blank>(current_tile.first, current_tile.second, empty, ' ');
     // target_tile has to be set after current_tile (to see if there is a check)
     (*game_board)[target_tile] = current_tile_copy;
 
