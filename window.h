@@ -13,7 +13,7 @@ public:
     void draw(const std::vector<std::vector<std::shared_ptr<piece>>> &);
 
 private:
-    std::unique_ptr<sf::RenderWindow> main_window;
+    sf::RenderWindow main_window;
     std::vector<sf::RectangleShape> tiles;
 };
 

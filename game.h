@@ -6,6 +6,7 @@
 #include <utility>
 #include <stdlib.h>
 #include "board.h"
+#include "window.h"
 
 class game
 {
@@ -30,6 +31,7 @@ protected:
     color winner;
     int turn_number;
     std::vector<std::vector<char>> white_past_positions, black_past_positions;
+    window gui();
 };
 
 #endif

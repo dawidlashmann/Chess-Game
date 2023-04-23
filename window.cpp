@@ -2,10 +2,10 @@
 
 window::window(int size)
 {
-    main_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(size, size), "Chess game");
-    main_window->setSize(sf::Vector2u(size, size));
+    main_window.setSize(sf::Vector2u(size, size));
+    main_window.setTitle("Chess game");
 
-    float size_of_tile = main_window->getSize().x / 8;
+    float size_of_tile = main_window.getSize().x / 8;
     for (int column = 0; column < 8; column++)
     {
         for (int row = 0; row < 8; row++)
@@ -22,19 +22,19 @@ window::window(int size)
 
 void window::draw(const std::vector<std::vector<std::shared_ptr<piece>>> &board)
 {
-    main_window->clear();
+    main_window.clear();
 
     for (auto tile : tiles)
     {
-        main_window->draw(tile);
+        main_window.draw(tile);
     }
     for (auto column : board)
     {
         for (auto piece : column)
         {
-            main_window->draw(piece->texture);
+            main_window.draw(piece->texture);
         }
     }
-    
-    main_window->display();
+
+    main_window.display();
 }
