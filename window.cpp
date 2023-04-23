@@ -19,3 +19,22 @@ window::window(int size)
         }
     }
 }
+
+void window::draw(const std::vector<std::vector<std::shared_ptr<piece>>> &board)
+{
+    main_window->clear();
+
+    for (auto tile : tiles)
+    {
+        main_window->draw(tile);
+    }
+    for (auto column : board)
+    {
+        for (auto piece : column)
+        {
+            main_window->draw(piece->texture);
+        }
+    }
+    
+    main_window->display();
+}
