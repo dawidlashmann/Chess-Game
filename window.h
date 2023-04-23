@@ -8,8 +8,8 @@
 class window
 {
 public:
-    window(int);
-
+    window();
+    void setWindow(int, const std::string &);
     void draw(const std::vector<std::vector<std::shared_ptr<piece>>> &);
 
 private:

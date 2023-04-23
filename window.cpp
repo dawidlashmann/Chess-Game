@@ -1,10 +1,7 @@
 #include "window.h"
 
-window::window(int size)
+window::window()
 {
-    main_window.setSize(sf::Vector2u(size, size));
-    main_window.setTitle("Chess game");
-
     float size_of_tile = main_window.getSize().x / 8;
     for (int column = 0; column < 8; column++)
     {
@@ -20,10 +17,17 @@ window::window(int size)
     }
 }
 
+void window::setWindow(int size, const std::string &windowName)
+{
+    main_window.setSize(sf::Vector2u(size, size));
+    main_window.setTitle(windowName);
+}
+
 void window::draw(const std::vector<std::vector<std::shared_ptr<piece>>> &board)
 {
     main_window.clear();
 
+    float size_of_tile = main_window.getSize().x / 8;
     for (auto tile : tiles)
     {
         main_window.draw(tile);
@@ -32,6 +36,7 @@ void window::draw(const std::vector<std::vector<std::shared_ptr<piece>>> &board)
     {
         for (auto piece : column)
         {
+            piece->texture.setPosition(sf::Vector2f(size_of_tile * piece->current_tile.first, size_of_tile * piece->current_tile.second));
             main_window.draw(piece->texture);
         }
     }
