@@ -8,7 +8,13 @@
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
-            "environment": [],
+            "environment": [
+                {
+                    "description": "LD_LIBRARY_PATH",
+                    "value": "$/usr/include/SFML:${env:LD_LIBRARY_PATH}",
+                    "ignoreFailures": true
+                }
+            ],
             "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
@@ -24,7 +30,8 @@
                 }
             ],
             "preLaunchTask": "C/C++: g++ build active file",
-            "miDebuggerPath": "/usr/bin/gdb"
+            "miDebuggerPath": "/usr/bin/gdb",
+            //"additionalSOLibSearchPath": "/usr/include/SFML/Graphics;/usr/include/SFML/Window;/usr/include/SFML/System"
         }
     ],
     "version": "2.0.0"

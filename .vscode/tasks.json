@@ -11,6 +11,9 @@
 				"-Wall",
 				"-std=c++17",
 				"${fileDirname}/*.cpp",
+				"-lsfml-graphics",
+				"-lsfml-system",
+				"-lsfml-window",
 				"-o",
 				"${fileDirname}/${fileBasenameNoExtension}"
 			],
