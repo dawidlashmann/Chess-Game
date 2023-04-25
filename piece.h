@@ -28,6 +28,7 @@ public:
     piece(int, int, color, char);
 
     bool setTexture(const std::string&);
+    void setSize(int);
     virtual bool move(std::pair<int, int>, color) = 0;
 
     virtual ~piece(){};

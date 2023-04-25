@@ -2,7 +2,10 @@
 
 game::game()
 {
+    int windowSize = 1000;
+    gui.setWindow(windowSize, "Chess game");
     turn_number = 1;
+
     // board initialization
     //  pawns
     for (int j = 0; j < 8; j++)
