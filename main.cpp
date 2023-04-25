@@ -41,6 +41,9 @@ int main()
                 }
                 ai_player = new engine((side == white) ? black : white);
                 game_ = ai_player;
+            }else
+            {
+                game_ = new game();
             }
             game_->begin();
         }
