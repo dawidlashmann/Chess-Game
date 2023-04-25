@@ -2,19 +2,24 @@
 
 game::game()
 {
-    int windowSize = 1000;
-    gui.setWindow(windowSize, "Chess game");
+    int windowSize = 504;
+    int tile_size = windowSize / 8;
+    gui = std::make_unique<window>(windowSize, "Chess Game");
     turn_number = 1;
 
     // board initialization
     //  pawns
     for (int j = 0; j < 8; j++)
     {
-        game_board->setTile(std::make_shared<pawn>(j, 1, white, 'P'));
+        std::shared_ptr<piece> temp_shared = std::make_shared<pawn>(j, 1, white, 'P');
+        temp_shared->setTexture("chess/Chess_pdt60.png", tile_size);
+        game_board->setTile(temp_shared);
     }
     for (int j = 0; j < 8; j++)
     {
-        game_board->setTile(std::make_shared<pawn>(j, 6, black, 'p'));
+        std::shared_ptr<piece> temp_shared = std::make_shared<pawn>(j, 6, black, 'p');
+        temp_shared->setTexture("chess/Chess_plt60.png", tile_size);
+        game_board->setTile(temp_shared);
     }
 
     // queen
@@ -51,105 +56,18 @@ game::game()
 
 void game::begin()
 {
-    // game loop
-    while (true)
+    while (gui->main_window->isOpen())
     {
-        // white's turn
-        std::pair<int, int> current_tile, target_tile;
-        do
+        sf::Event event;
+        while (gui->main_window->pollEvent(event))
         {
-            system("clear");
-            // system("cls");
-            game_board->draw();
-            std::cout << "Turn number: " << turn_number << '\n';
-            std::cout << "White's turn:\n";
-            user_input(current_tile, target_tile, white);
-
-        } while (!turn(current_tile, target_tile, white));
-
-        // check if black is checked and if so, check if he has any moves
-        if (check_(game_board->black_king_tile, game_board->black_king_tile, black))
-        {
-            if (!has_any_moves(black))
+            if (event.type == sf::Event::Closed)
             {
-                winner = white;
+                gui->main_window->close();
                 break;
             }
         }
-        else if (stale_mate(black))
-        {
-            // check after each move is it's stalemate
-            winner = empty;
-            break;
-        }
-        // check if it's a draw by repetition
-        if (draw_by_repetition(white))
-        {
-            winner = empty;
-            break;
-        }
-
-        // draw the board
-        system("clear");
-        // system("cls");
-        game_board->draw();
-
-        // black's turn
-        do
-        {
-            system("clear");
-            // system("cls");
-            game_board->draw();
-            std::cout << "Turn number: " << turn_number << '\n';
-            std::cout << "Black's turn:\n";
-            user_input(current_tile, target_tile, black);
-
-        } while (!turn(current_tile, target_tile, black));
-
-        // check if white is checked and if so, check if he has any moves
-        if (check_(game_board->white_king_tile, game_board->white_king_tile, white))
-        {
-            if (!has_any_moves(white))
-            {
-                winner = black;
-                break;
-            }
-        }
-        else if (stale_mate(white))
-        {
-            // check for stalemate
-            winner = empty;
-            break;
-        }
-        // check draw by repetition
-        if (draw_by_repetition(black))
-        {
-            winner = empty;
-            break;
-        }
-
-        // draw the board
-        system("clear");
-        // system("cls");
-        game_board->draw();
-
-        turn_number++;
-    }
-    system("clear");
-    // system("cls");
-    game_board->draw();
-
-    switch (winner)
-    {
-    case white:
-        std::cout << "WHITE WON!!! - 1:0";
-        break;
-    case black:
-        std::cout << "BLACK WON!!! - 0:1";
-        break;
-    case empty:
-        std::cout << "DRAW!!! - 0.5:0.5";
-        break;
+        gui->draw(game_board->board);
     }
 }
 

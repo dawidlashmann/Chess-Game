@@ -27,7 +27,8 @@ public:
     piece();
     piece(int, int, color, char);
 
-    bool setTexture(const std::string&);
+    bool
+    setTexture(const std::string &, int = 0);
     void setSize(int);
     virtual bool move(std::pair<int, int>, color) = 0;
 
@@ -38,7 +39,8 @@ public:
     color side;
     char letter;
     bool moved;
-    sf::Sprite texture;
+    sf::Texture texture;
+    sf::Sprite sprite;
 };
 
 #endif

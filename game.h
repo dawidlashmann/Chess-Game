@@ -13,6 +13,7 @@ class game
 public:
     game();
     virtual void begin();
+    virtual ~game(){};
 
 protected:
     void user_input(std::pair<int, int> &, std::pair<int, int> &, color);
@@ -31,7 +32,7 @@ protected:
     color winner;
     int turn_number;
     std::vector<std::vector<char>> white_past_positions, black_past_positions;
-    window gui;
+    std::unique_ptr<window> gui;
 };
 
 #endif

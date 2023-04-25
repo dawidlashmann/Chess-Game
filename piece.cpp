@@ -9,23 +9,24 @@ piece::piece(int column, int row, color side, char letter)
     moved = 0;
 }
 
-bool piece::setTexture(const std::string &filename)
+bool piece::setTexture(const std::string &filename, int size)
 {
-    sf::Texture temp_texture;
-    if (!temp_texture.loadFromFile(filename))
+    if (!texture.loadFromFile(filename))
     {
         std::cout << "\nFailed to load the image\n";
         return false;
     }
-    temp_texture.setSmooth(true);
-    texture.setTexture(temp_texture);
+    texture.setSmooth(true);
+    sprite.setTexture(texture);
+    if (size != 0)
+        setSize(size);
     return true;
 }
 
 void piece::setSize(int newSize)
 {
-    sf::FloatRect rect = texture.getLocalBounds();
+    sf::FloatRect rect = sprite.getLocalBounds();
     float width = rect.width;
-    float factor = width / newSize;
-    texture.setScale(sf::Vector2f(factor, factor));
+    float factor = newSize / width;
+    sprite.setScale(sf::Vector2f(factor, factor));
 }

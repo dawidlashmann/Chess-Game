@@ -8,12 +8,13 @@
 class window
 {
 public:
-    window();
-    void setWindow(int, const std::string &);
+    window(int, const std::string &);
     void draw(const std::vector<std::vector<std::shared_ptr<piece>>> &);
 
+public:
+    std::unique_ptr<sf::RenderWindow> main_window;
+
 private:
-    sf::RenderWindow main_window;
     std::vector<sf::RectangleShape> tiles;
 };
 

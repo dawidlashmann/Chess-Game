@@ -48,6 +48,8 @@ int main()
                 game_ = new game();
             }
             game_->begin();
+            delete game_;
+            delete ai_player;
         }
         std::cout << "\nDO YOU WISH TO PLAY ANOTHER ROUND?" << '\n'
                   << "1 - yes" << '\n'
