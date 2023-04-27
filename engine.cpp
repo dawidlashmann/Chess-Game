@@ -37,7 +37,8 @@ void engine::begin()
             }
             else
             {
-                user_input(current_tile, target_tile, white);
+                bool siema;
+                user_click(current_tile, target_tile, white, siema);    
             }
 
         } while (!turn(current_tile, target_tile, white));
@@ -98,7 +99,8 @@ void engine::begin()
             }
             else
             {
-                user_input(current_tile, target_tile, black);
+                bool siema;
+                user_click(current_tile, target_tile, black, siema);
             }
 
         } while (!turn(current_tile, target_tile, black));

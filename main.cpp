@@ -72,6 +72,4 @@ int main()
         }
 
     } while (round);
-
-    return 0;
 }
