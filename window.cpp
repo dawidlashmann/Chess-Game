@@ -1,8 +1,10 @@
 #include "window.h"
 
-window::window(int windowSize, const std::string & windowName)
+window::window(int windowSize, const std::string &windowName)
 {
     main_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(windowSize, windowSize), windowName);
+    main_window->setVerticalSyncEnabled(false);
+    main_window->setFramerateLimit(30);
     float size_of_tile = windowSize / 8;
     for (int column = 0; column < 8; column++)
     {
@@ -34,6 +36,10 @@ void window::draw(const std::vector<std::vector<std::shared_ptr<piece>>> &board)
             piece->sprite.setPosition(sf::Vector2f(size_of_tile * piece->current_tile.first, size_of_tile * piece->current_tile.second));
             main_window->draw(piece->sprite);
         }
+    }
+    for (auto dot : avaiable_moves)
+    {
+        main_window->draw(dot);
     }
 
     main_window->display();

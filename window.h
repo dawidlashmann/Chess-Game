@@ -13,6 +13,7 @@ public:
 
 public:
     std::unique_ptr<sf::RenderWindow> main_window;
+    std::vector<sf::CircleShape> avaiable_moves;
 
 private:
     std::vector<sf::RectangleShape> tiles;
