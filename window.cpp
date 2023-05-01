@@ -20,7 +20,7 @@ window::window(int windowSize, const std::string &windowName)
     }
 }
 
-void window::draw(const std::vector<std::vector<std::shared_ptr<piece>>> &board)
+void window::draw_scene(const std::vector<std::vector<std::shared_ptr<piece>>> &board)
 {
     main_window->clear();
 

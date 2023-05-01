@@ -13,10 +13,10 @@ class game
 public:
     game();
     virtual void begin();
-    virtual ~game(){};
+    virtual ~game() { delete game_board; };
 
 protected:
-    void user_input(std::pair<int, int> &, std::pair<int, int> &, color);
+    bool user_click(std::pair<int, int> &, std::pair<int, int> &, const color&, bool&);
 
     bool turn(std::pair<int, int>, std::pair<int, int>, color);
     bool interpose(std::pair<int, int>, std::pair<int, int>) const;

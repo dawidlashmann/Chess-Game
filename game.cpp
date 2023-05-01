@@ -11,51 +11,61 @@ game::game()
     //  pawns
     for (int j = 0; j < 8; j++)
     {
-        std::shared_ptr<piece> temp_shared = std::make_shared<pawn>(j, 1, white, 'P');
-        temp_shared->setTexture("chess/Chess_pdt60.png", tile_size);
-        game_board->setTile(temp_shared);
+        game_board->setTile(std::make_shared<pawn>(j, 1, white, 'P', "chess/Chess_plt60.png", tile_size));
     }
     for (int j = 0; j < 8; j++)
     {
-        std::shared_ptr<piece> temp_shared = std::make_shared<pawn>(j, 6, black, 'p');
-        temp_shared->setTexture("chess/Chess_plt60.png", tile_size);
-        game_board->setTile(temp_shared);
+        game_board->setTile(std::make_shared<pawn>(j, 6, black, 'p', "chess/Chess_pdt60.png", tile_size));
     }
 
     // queen
-    game_board->setTile(std::make_shared<queen>(3, 0, white, 'Q'));
-    game_board->setTile(std::make_shared<queen>(3, 7, black, 'q'));
+    game_board->setTile(std::make_shared<queen>(3, 0, white, 'Q', "chess/Chess_qlt60.png", tile_size));
+    game_board->setTile(std::make_shared<queen>(3, 7, black, 'q', "chess/Chess_qdt60.png", tile_size));
 
     // bishops
-    game_board->setTile(std::make_shared<bishop>(2, 0, white, 'B'));
-    game_board->setTile(std::make_shared<bishop>(5, 0, white, 'B'));
-    game_board->setTile(std::make_shared<bishop>(2, 7, black, 'b'));
-    game_board->setTile(std::make_shared<bishop>(5, 7, black, 'b'));
+    game_board->setTile(std::make_shared<bishop>(2, 0, white, 'B', "chess/Chess_blt60.png", tile_size));
+    game_board->setTile(std::make_shared<bishop>(5, 0, white, 'B', "chess/Chess_blt60.png", tile_size));
+    game_board->setTile(std::make_shared<bishop>(2, 7, black, 'b', "chess/Chess_bdt60.png", tile_size));
+    game_board->setTile(std::make_shared<bishop>(5, 7, black, 'b', "chess/Chess_bdt60.png", tile_size));
 
     // knights
-    game_board->setTile(std::make_shared<knight>(1, 0, white, 'N'));
-    game_board->setTile(std::make_shared<knight>(6, 0, white, 'N'));
-    game_board->setTile(std::make_shared<knight>(1, 7, black, 'n'));
-    game_board->setTile(std::make_shared<knight>(6, 7, black, 'n'));
+    game_board->setTile(std::make_shared<knight>(1, 0, white, 'N', "chess/Chess_nlt60.png", tile_size));
+    game_board->setTile(std::make_shared<knight>(6, 0, white, 'N', "chess/Chess_nlt60.png", tile_size));
+    game_board->setTile(std::make_shared<knight>(1, 7, black, 'n', "chess/Chess_ndt60.png", tile_size));
+    game_board->setTile(std::make_shared<knight>(6, 7, black, 'n', "chess/Chess_ndt60.png", tile_size));
 
     // rooks
-    game_board->setTile(std::make_shared<rook>(0, 0, white, 'R'));
-    game_board->setTile(std::make_shared<rook>(7, 0, white, 'R'));
-    game_board->setTile(std::make_shared<rook>(0, 7, black, 'r'));
-    game_board->setTile(std::make_shared<rook>(7, 7, black, 'r'));
+    game_board->setTile(std::make_shared<rook>(0, 0, white, 'R', "chess/Chess_rlt60.png", tile_size));
+    game_board->setTile(std::make_shared<rook>(7, 0, white, 'R', "chess/Chess_rlt60.png", tile_size));
+    game_board->setTile(std::make_shared<rook>(0, 7, black, 'r', "chess/Chess_rdt60.png", tile_size));
+    game_board->setTile(std::make_shared<rook>(7, 7, black, 'r', "chess/Chess_rdt60.png", tile_size));
 
     // kings
-    game_board->setTile(std::make_shared<king>(4, 0, white, 'K'));
-    game_board->setTile(std::make_shared<king>(4, 7, black, 'k'));
+    game_board->setTile(std::make_shared<king>(4, 0, white, 'K', "chess/Chess_klt60.png", tile_size));
+    game_board->setTile(std::make_shared<king>(4, 7, black, 'k', "chess/Chess_kdt60.png", tile_size));
     game_board->white_king_tile.first = 4;
     game_board->white_king_tile.second = 0;
     game_board->black_king_tile.first = 4;
     game_board->black_king_tile.second = 7;
-    game_board->draw();
+
+    for (auto column : game_board->board)
+    {
+        for (auto tile : column)
+        {
+            if (tile->side == empty)
+            {
+                tile->setTexture("chess/blank.png", tile_size);
+                tile->sprite.setColor(sf::Color(0, 0, 0, 0));
+            }
+        }
+    }
 }
 
 void game::begin()
 {
+    color turn_color = white;
+    std::pair<int, int> current_tile, target_tile;
+    bool move = false;
     while (gui->main_window->isOpen())
     {
         sf::Event event;
@@ -66,65 +76,73 @@ void game::begin()
                 gui->main_window->close();
                 break;
             }
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                if (user_click(current_tile, target_tile, turn_color, move))
+                {
+                    if (turn(current_tile, target_tile, turn_color))
+                    {
+                        move = false;
+                        gui->avaiable_moves.clear();
+                        turn_color = (turn_color == white) ? black : white;
+                    }
+                }
+            }
         }
-        gui->draw(game_board->board);
+        gui->draw_scene(game_board->board);
     }
 }
 
-void game::user_input(std::pair<int, int> &current_tile, std::pair<int, int> &target_tile, color c)
+bool game::user_click(std::pair<int, int> &current_tile, std::pair<int, int> &target_tile, const color &c, bool &move)
 {
-    while (true)
+    sf::Vector2f mouse = gui->main_window->mapPixelToCoords(sf::Mouse::getPosition(*gui->main_window));
+    std::shared_ptr<piece> this_tile = std::make_shared<blank>(-1, -1, empty, ' ');
+    for (auto column : game_board->board)
     {
-        char a;
-        std::cin >> a;
-        current_tile.first = (int)a - 97;
-        do
+        for (auto tile : column)
         {
-            if (std::cin.fail())
+            if (tile->side == empty && move == 0)
+                continue;
+            sf::FloatRect bounds = tile->sprite.getGlobalBounds();
+            if (bounds.contains(mouse))
             {
-                system("clear");
-                // system("cls");
-                game_board->draw();
-                std::cout << "Wrong input\nType in an integer\n"
-                          << a << '\n';
-            }
-            std::cin.clear();
-            std::cin.ignore();
-            std::cin >> current_tile.second;
-        } while (std::cin.fail());
-        char b;
-        current_tile.second--;
-        std::cin >> b;
-        target_tile.first = (int)b - 97;
-        do
-        {
-            if (std::cin.fail())
-            {
-                system("clear");
-                // system("cls");
-                game_board->draw();
-                std::cout << "Wrong input\nType in an integer\n"
-                          << a << '\n'
-                          << current_tile.second + 1 << '\n'
-                          << b << '\n';
-            }
-            std::cin.clear();
-            std::cin.ignore();
-            std::cin >> target_tile.second;
-        } while (std::cin.fail());
-        target_tile.second--;
-        if (current_tile.first >= 0 && current_tile.first <= 7 && current_tile.second >= 0 && current_tile.second <= 7)
-        {
-            if (target_tile.first >= 0 && target_tile.first <= 7 && target_tile.second >= 0 && target_tile.second <= 7)
-            {
-                break;
+                this_tile = tile;
             }
         }
-        system("clear");
-        // system("cls");
-        game_board->draw();
-        std::cout << "Bad coordinates\nTry again\n";
     }
+    if (this_tile->current_tile.first == -1)
+    {
+        return false;
+    }
+
+    if (this_tile->side == c)
+    {
+        gui->avaiable_moves.clear();
+        for (auto column : game_board->board)
+        {
+            for (auto tile : column)
+            {
+                if (is_move_legal(this_tile->current_tile, tile->current_tile, c))
+                {
+                    int tile_size = gui->main_window->getSize().x / 8;
+                    sf::CircleShape dot(tile_size / 4, 60);
+                    dot.setOrigin(sf::Vector2f(tile_size / 4, tile_size / 4));
+                    dot.setPosition(sf::Vector2f(tile->current_tile.first * tile_size + tile_size / 2, tile->current_tile.second * tile_size + tile_size / 2));
+                    dot.setFillColor(sf::Color(169, 169, 169, 150));
+                    gui->avaiable_moves.push_back(dot);
+                }
+            }
+        }
+        current_tile = this_tile->current_tile;
+        move = true;
+        return false;
+    }
+    else if (move)
+    {
+        target_tile = this_tile->current_tile;
+        return true;
+    }
+    return false;
 }
 
 bool game::turn(std::pair<int, int> current_tile, std::pair<int, int> target_tile, color c)

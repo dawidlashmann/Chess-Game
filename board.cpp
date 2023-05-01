@@ -2,13 +2,14 @@
 
 chess_board::chess_board()
 {
+    board.reserve(8);
     for (int column = 0; column < 8; column++)
     {
         std::vector<std::shared_ptr<piece>> temp_column;
+        temp_column.reserve(8);
         for (int row = 0; row < 8; row++)
         {
-            std::shared_ptr<blank> temp_blank = std::make_shared<blank>(column, row, empty, ' ');
-            temp_column.push_back(temp_blank);
+            temp_column.emplace_back(std::make_shared<blank>(column, row, empty, ' '));
         }
         board.push_back(temp_column);
     }
@@ -107,5 +108,8 @@ void chess_board::swapTiles(std::pair<int, int> curr_tile, std::pair<int, int> t
     board[target_tile.first][target_tile.second] = board[curr_tile.first][curr_tile.second];
     board[target_tile.first][target_tile.second]->current_tile = target_tile;
     board[curr_tile.first][curr_tile.second] = std::make_shared<blank>(curr_tile.first, curr_tile.second, empty, ' ');
+    float width = board[target_tile.first][target_tile.second]->sprite.getLocalBounds().width;
+    board[curr_tile.first][curr_tile.second]->setTexture("chess/blank.png", width);
+    board[curr_tile.first][curr_tile.second]->sprite.setColor(sf::Color(0, 0, 0, 0));
     board[target_tile.first][target_tile.second]->moved = 1;
 }
