@@ -25,8 +25,10 @@ bool piece::setTexture(const std::string &filename, int size)
 
 void piece::setSize(int newSize)
 {
-    sf::FloatRect rect = sprite.getLocalBounds();
+    sf::FloatRect rect = sprite.getGlobalBounds();
     float width = rect.width;
-    float factor = newSize / width;
-    sprite.setScale(sf::Vector2f(factor, factor));
+    float height = rect.height;
+    float factor_y = newSize / height;
+    float factor_x = newSize / width;
+    sprite.setScale(sf::Vector2f(factor_x, factor_y));
 }

@@ -60,13 +60,11 @@ game::game()
             }
         }
     }
-    float size_of_tile_x = gui->main_window->getSize().x / 8;
-    float size_of_tile_y = gui->main_window->getSize().y / 8;
     for (auto column : game_board->board)
     {
         for (auto piece : column)
         {
-            piece->sprite.setPosition(sf::Vector2f(size_of_tile_x * piece->current_tile.first, size_of_tile_y * piece->current_tile.second));
+            piece->sprite.setPosition(sf::Vector2f(tile_size * piece->current_tile.first, tile_size * piece->current_tile.second));
         }
     }
 }
@@ -135,13 +133,13 @@ void game::begin()
     switch (winner)
     {
     case white:
-        std::cout << "WHITE WON!!! - 1:0";
+        std::cout << "WHITE WON!!! - 1:0\n";
         break;
     case black:
-        std::cout << "BLACK WON!!! - 0:1";
+        std::cout << "BLACK WON!!! - 0:1\n";
         break;
     case empty:
-        std::cout << "DRAW!!! - 0.5:0.5";
+        std::cout << "DRAW!!! - 0.5:0.5\n";
         break;
     }
 }
