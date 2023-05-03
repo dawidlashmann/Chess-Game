@@ -28,7 +28,7 @@ protected:
     bool is_move_legal(std::pair<int, int>, std::pair<int, int>, color) const;
     
 protected:
-    chess_board *game_board = new chess_board();
+    chess_board *game_board;
     color winner;
     int turn_number;
     std::vector<std::vector<char>> white_past_positions, black_past_positions;

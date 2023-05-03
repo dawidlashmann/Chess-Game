@@ -2,6 +2,7 @@
 
 game::game()
 {
+    game_board = new chess_board();
     int windowSize = 504;
     int tile_size = windowSize / 8;
     gui = std::make_unique<window>(windowSize, "Chess Game");
@@ -76,20 +77,60 @@ void game::begin()
                 gui->main_window->close();
                 break;
             }
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            if (event.type == sf::Event::MouseButtonPressed)
             {
-                if (user_click(current_tile, target_tile, turn_color, move))
+                if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    if (turn(current_tile, target_tile, turn_color))
+                    if (user_click(current_tile, target_tile, turn_color, move))
                     {
-                        move = false;
-                        gui->avaiable_moves.clear();
-                        turn_color = (turn_color == white) ? black : white;
+                        if (turn(current_tile, target_tile, turn_color))
+                        {
+                            color enemy_color = (turn_color == white) ? black : white;
+                            std::pair<int, int> enemy_king_tile = (turn_color == white) ? game_board->black_king_tile : game_board->white_king_tile;
+                            if (check_(enemy_king_tile, enemy_king_tile, enemy_color))
+                            {
+                                if (!has_any_moves(enemy_color))
+                                {
+                                    winner = turn_color;
+                                    gui->main_window->close();
+                                    break;
+                                }
+                            }
+                            else if (stale_mate(enemy_color))
+                            {
+                                winner = empty;
+                                gui->main_window->close();
+                                break;
+                            }
+
+                            if (draw_by_repetition(turn_color))
+                            {
+                                winner = empty;
+                                gui->main_window->close();
+                                break;
+                            }
+
+                            move = false;
+                            gui->avaiable_moves.clear();
+                            turn_color = (turn_color == white) ? black : white;
+                        }
                     }
                 }
             }
         }
         gui->draw_scene(game_board->board);
+    }
+    switch (winner)
+    {
+    case white:
+        std::cout << "WHITE WON!!! - 1:0";
+        break;
+    case black:
+        std::cout << "BLACK WON!!! - 0:1";
+        break;
+    case empty:
+        std::cout << "DRAW!!! - 0.5:0.5";
+        break;
     }
 }
 
@@ -174,8 +215,10 @@ bool game::turn(std::pair<int, int> current_tile, std::pair<int, int> target_til
         // promotion
         if ((*game_board)[target_tile]->letter == 'P' || (*game_board)[target_tile]->letter == 'p')
         {
+            char temp_letter = (c == white) ? 'Q' : 'q';
+            const std::string temp_filename = (c == white) ? "chess/Chess_qlt60.png" : "chess/Chess_qdt60.png";
             if (target_tile.second == 7 || target_tile.second == 0)
-                (*game_board)[target_tile] = std::make_shared<queen>(target_tile.first, target_tile.second, c, ((c == white) ? 'Q' : 'q'));
+                (*game_board)[target_tile] = std::make_shared<queen>(target_tile.first, target_tile.second, c, temp_letter, temp_filename, gui->main_window->getSize().x / 8);
             black_past_positions.clear();
             white_past_positions.clear();
         }
@@ -468,7 +511,7 @@ bool game::check_(std::pair<int, int> current_tile, std::pair<int, int> target_t
             // check if an enemy piece can go to the king's tile
             if (tile->side == enemy_color)
             {
-                if (tile->move(king_tile, (*game_board)[king_tile]->side))
+                if (tile->move(king_tile, king_color))
                 {
                     if (!interpose(tile->current_tile, king_tile))
                     {

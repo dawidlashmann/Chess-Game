@@ -2,7 +2,7 @@
 
 window::window(int windowSize, const std::string &windowName)
 {
-    main_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(windowSize, windowSize), windowName);
+    main_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(windowSize, windowSize), windowName, sf::Style::Resize);
     main_window->setVerticalSyncEnabled(false);
     main_window->setFramerateLimit(30);
     float size_of_tile = windowSize / 8;
@@ -24,7 +24,8 @@ void window::draw_scene(const std::vector<std::vector<std::shared_ptr<piece>>> &
 {
     main_window->clear();
 
-    float size_of_tile = main_window->getSize().x / 8;
+    float size_of_tile_x = main_window->getSize().x / 8;
+    float size_of_tile_y = main_window->getSize().y / 8;
     for (auto tile : tiles)
     {
         main_window->draw(tile);
@@ -33,7 +34,7 @@ void window::draw_scene(const std::vector<std::vector<std::shared_ptr<piece>>> &
     {
         for (auto piece : column)
         {
-            piece->sprite.setPosition(sf::Vector2f(size_of_tile * piece->current_tile.first, size_of_tile * piece->current_tile.second));
+            piece->sprite.setPosition(sf::Vector2f(size_of_tile_x * piece->current_tile.first, size_of_tile_y * piece->current_tile.second));
             main_window->draw(piece->sprite);
         }
     }
