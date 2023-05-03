@@ -111,5 +111,6 @@ void chess_board::swapTiles(std::pair<int, int> curr_tile, std::pair<int, int> t
     float width = board[target_tile.first][target_tile.second]->sprite.getLocalBounds().width;
     board[curr_tile.first][curr_tile.second]->setTexture("chess/blank.png", width);
     board[curr_tile.first][curr_tile.second]->sprite.setColor(sf::Color(0, 0, 0, 0));
+    board[curr_tile.first][curr_tile.second]->sprite.setPosition(width * curr_tile.first, width * curr_tile.second);
     board[target_tile.first][target_tile.second]->moved = 1;
 }

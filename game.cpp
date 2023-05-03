@@ -60,6 +60,15 @@ game::game()
             }
         }
     }
+    float size_of_tile_x = gui->main_window->getSize().x / 8;
+    float size_of_tile_y = gui->main_window->getSize().y / 8;
+    for (auto column : game_board->board)
+    {
+        for (auto piece : column)
+        {
+            piece->sprite.setPosition(sf::Vector2f(size_of_tile_x * piece->current_tile.first, size_of_tile_y * piece->current_tile.second));
+        }
+    }
 }
 
 void game::begin()
@@ -113,6 +122,9 @@ void game::begin()
                             move = false;
                             gui->avaiable_moves.clear();
                             turn_color = (turn_color == white) ? black : white;
+                            float size_of_tile_x = gui->main_window->getSize().x / 8;
+                            float size_of_tile_y = gui->main_window->getSize().y / 8;
+                            (*game_board)[target_tile]->sprite.setPosition(sf::Vector2f(size_of_tile_x * (*game_board)[target_tile]->current_tile.first, size_of_tile_y * (*game_board)[target_tile]->current_tile.second));
                         }
                     }
                 }
