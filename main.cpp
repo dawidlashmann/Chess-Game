@@ -5,7 +5,7 @@
 
 int main()
 {
-    engine* game_ = new engine(black);
+    game* game_ = new game;
     game_->begin();
 
     delete game_;

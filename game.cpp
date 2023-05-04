@@ -77,14 +77,6 @@ void game::begin()
     bool game_ended = false;
     while (gui.main_window.isOpen())
     {
-        if (game_ended)
-        {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
-            {
-                gui.main_window.close();
-            }
-            continue;
-        }
         sf::Event event;
         while (gui.main_window.pollEvent(event))
         {
@@ -93,7 +85,7 @@ void game::begin()
                 gui.main_window.close();
                 break;
             }
-            if (event.type == sf::Event::MouseButtonPressed)
+            if (event.type == sf::Event::MouseButtonPressed && !game_ended)
             {
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
@@ -117,18 +109,19 @@ void game::begin()
             }
         }
         gui.draw_scene(game_board->board);
-    }
-    switch (winner)
-    {
-    case white:
-        std::cout << "WHITE WON!!! - 1:0\n";
-        break;
-    case black:
-        std::cout << "BLACK WON!!! - 0:1\n";
-        break;
-    case empty:
-        std::cout << "DRAW!!! - 0.5:0.5\n";
-        break;
+        if (game_ended)
+        {
+            if (winner != empty)
+            {
+                std::string winner_str = (winner = white) ? "White " : "Black ";
+                gui.draw_box(winner_str + "won");
+            }
+            else
+            {
+                gui.draw_box("It's a draw");
+            }
+        }
+        gui.main_window.display();
     }
 }
 
@@ -552,6 +545,5 @@ bool game::check_for_end_game(color c)
         return true;
     }
 
-    
     return false;
 }

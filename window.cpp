@@ -19,6 +19,7 @@ void window::create_window(int windowSize, const std::string &windowName)
             tiles.push_back(temp_rect);
         }
     }
+    default_font.loadFromFile("chess/arial.ttf");
 }
 
 void window::draw_scene(const std::vector<std::vector<std::shared_ptr<piece>>> &board)
@@ -43,6 +44,21 @@ void window::draw_scene(const std::vector<std::vector<std::shared_ptr<piece>>> &
     {
         main_window.draw(dot);
     }
+}
 
-    main_window.display();
+void window::draw_box(const std::string &text_to_be_drawn)
+{
+    text.setFont(default_font);
+    text.setString(text_to_be_drawn);
+    text.setCharacterSize(35);
+    text.setScale(-1.f, -1.f);
+    text.setFillColor(sf::Color::White);
+    text.setOrigin(sf::Vector2f(text.getLocalBounds().width / 2, text.getLocalBounds().height));
+    text.setPosition(sf::Vector2f(main_window.getSize().x / 2, main_window.getSize().y / 2));
+    sf::RectangleShape box;
+    box.setSize(sf::Vector2f(main_window.getSize().x / 2, main_window.getSize().y / 4));
+    box.setFillColor(sf::Color::Blue);
+    box.setPosition(sf::Vector2f(main_window.getSize().x / 4, 3 * main_window.getSize().y / 8));
+    main_window.draw(box);
+    main_window.draw(text);
 }
