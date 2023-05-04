@@ -8,11 +8,12 @@
 class window
 {
 public:
-    window(int, const std::string &);
+    window(){};
+    void create_window(int, const std::string &);
     void draw_scene(const std::vector<std::vector<std::shared_ptr<piece>>> &);
 
 public:
-    std::unique_ptr<sf::RenderWindow> main_window;
+    sf::RenderWindow main_window;
     std::vector<sf::CircleShape> avaiable_moves;
 
 private:

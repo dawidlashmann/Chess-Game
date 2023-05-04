@@ -5,7 +5,7 @@ game::game()
     game_board = new chess_board();
     int windowSize = 504;
     int tile_size = windowSize / 8;
-    gui = std::make_unique<window>(windowSize, "Chess Game");
+    gui.create_window(windowSize, "Chess game");
     turn_number = 1;
 
     // board initialization
@@ -75,22 +75,22 @@ void game::begin()
     std::pair<int, int> current_tile, target_tile;
     bool move = false;
     bool game_ended = false;
-    while (gui->main_window->isOpen())
+    while (gui.main_window.isOpen())
     {
         if (game_ended)
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
             {
-                gui->main_window->close();
+                gui.main_window.close();
             }
             continue;
         }
         sf::Event event;
-        while (gui->main_window->pollEvent(event))
+        while (gui.main_window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
             {
-                gui->main_window->close();
+                gui.main_window.close();
                 break;
             }
             if (event.type == sf::Event::MouseButtonPressed)
@@ -106,17 +106,17 @@ void game::begin()
                                 game_ended = true;
                             }
                             move = false;
-                            gui->avaiable_moves.clear();
+                            gui.avaiable_moves.clear();
                             turn_color = (turn_color == white) ? black : white;
-                            float size_of_tile_x = gui->main_window->getSize().x / 8;
-                            float size_of_tile_y = gui->main_window->getSize().y / 8;
+                            float size_of_tile_x = gui.main_window.getSize().x / 8;
+                            float size_of_tile_y = gui.main_window.getSize().y / 8;
                             (*game_board)[target_tile]->sprite.setPosition(sf::Vector2f(size_of_tile_x * (*game_board)[target_tile]->current_tile.first, size_of_tile_y * (*game_board)[target_tile]->current_tile.second));
                         }
                     }
                 }
             }
         }
-        gui->draw_scene(game_board->board);
+        gui.draw_scene(game_board->board);
     }
     switch (winner)
     {
@@ -134,7 +134,7 @@ void game::begin()
 
 bool game::user_click(std::pair<int, int> &current_tile, std::pair<int, int> &target_tile, const color &c, bool &move)
 {
-    sf::Vector2f mouse = gui->main_window->mapPixelToCoords(sf::Mouse::getPosition(*gui->main_window));
+    sf::Vector2f mouse = gui.main_window.mapPixelToCoords(sf::Mouse::getPosition(gui.main_window));
     std::shared_ptr<piece> this_tile = std::make_shared<blank>(-1, -1, empty, ' ');
     for (auto column : game_board->board)
     {
@@ -156,19 +156,19 @@ bool game::user_click(std::pair<int, int> &current_tile, std::pair<int, int> &ta
 
     if (this_tile->side == c)
     {
-        gui->avaiable_moves.clear();
+        gui.avaiable_moves.clear();
         for (auto column : game_board->board)
         {
             for (auto tile : column)
             {
                 if (is_move_legal(this_tile->current_tile, tile->current_tile, c))
                 {
-                    int tile_size = gui->main_window->getSize().x / 8;
+                    int tile_size = gui.main_window.getSize().x / 8;
                     sf::CircleShape dot(tile_size / 4, 60);
                     dot.setOrigin(sf::Vector2f(tile_size / 4, tile_size / 4));
                     dot.setPosition(sf::Vector2f(tile->current_tile.first * tile_size + tile_size / 2, tile->current_tile.second * tile_size + tile_size / 2));
                     dot.setFillColor(sf::Color(169, 169, 169, 150));
-                    gui->avaiable_moves.push_back(dot);
+                    gui.avaiable_moves.push_back(dot);
                 }
             }
         }
@@ -216,7 +216,7 @@ bool game::turn(std::pair<int, int> current_tile, std::pair<int, int> target_til
             char temp_letter = (c == white) ? 'Q' : 'q';
             const std::string temp_filename = (c == white) ? "chess/Chess_qlt60.png" : "chess/Chess_qdt60.png";
             if (target_tile.second == 7 || target_tile.second == 0)
-                (*game_board)[target_tile] = std::make_shared<queen>(target_tile.first, target_tile.second, c, temp_letter, temp_filename, gui->main_window->getSize().x / 8);
+                (*game_board)[target_tile] = std::make_shared<queen>(target_tile.first, target_tile.second, c, temp_letter, temp_filename, gui.main_window.getSize().x / 8);
             black_past_positions.clear();
             white_past_positions.clear();
         }
@@ -551,5 +551,7 @@ bool game::check_for_end_game(color c)
         winner = empty;
         return true;
     }
+
+    
     return false;
 }

@@ -33,7 +33,7 @@ protected:
     color winner;
     int turn_number;
     std::vector<std::vector<char>> white_past_positions, black_past_positions;
-    std::unique_ptr<window> gui;
+    window gui;
 };
 
 #endif

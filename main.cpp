@@ -5,8 +5,10 @@
 
 int main()
 {
-    engine game_(black);
-    game_.begin();
+    engine* game_ = new engine(black);
+    game_->begin();
+
+    delete game_;
 
     return 0;
 }

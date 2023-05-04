@@ -6,13 +6,13 @@ void engine::begin()
     std::pair<int, int> current_tile, target_tile;
     bool move = false;
     bool game_ended = false;
-    while (gui->main_window->isOpen())
+    while (gui.main_window.isOpen())
     {
         if (game_ended)
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
             {
-                gui->main_window->close();
+                gui.main_window.close();
             }
             continue;
         }
@@ -31,18 +31,18 @@ void engine::begin()
                     game_ended = true;
                 }
                 turn_color = (turn_color == white) ? black : white;
-                float size_of_tile_x = gui->main_window->getSize().x / 8;
-                float size_of_tile_y = gui->main_window->getSize().y / 8;
+                float size_of_tile_x = gui.main_window.getSize().x / 8;
+                float size_of_tile_y = gui.main_window.getSize().y / 8;
                 (*game_board)[ai_move.second]->sprite.setPosition(sf::Vector2f(size_of_tile_x * (*game_board)[ai_move.second]->current_tile.first, size_of_tile_y * (*game_board)[ai_move.second]->current_tile.second));
             }
         }
 
         sf::Event event;
-        while (gui->main_window->pollEvent(event))
+        while (gui.main_window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
             {
-                gui->main_window->close();
+                gui.main_window.close();
                 break;
             }
             if (event.type == sf::Event::MouseButtonPressed && turn_color != this->side)
@@ -58,17 +58,17 @@ void engine::begin()
                                 game_ended = true;
                             }
                             move = false;
-                            gui->avaiable_moves.clear();
+                            gui.avaiable_moves.clear();
                             turn_color = (turn_color == white) ? black : white;
-                            float size_of_tile_x = gui->main_window->getSize().x / 8;
-                            float size_of_tile_y = gui->main_window->getSize().y / 8;
+                            float size_of_tile_x = gui.main_window.getSize().x / 8;
+                            float size_of_tile_y = gui.main_window.getSize().y / 8;
                             (*game_board)[target_tile]->sprite.setPosition(sf::Vector2f(size_of_tile_x * (*game_board)[target_tile]->current_tile.first, size_of_tile_y * (*game_board)[target_tile]->current_tile.second));
                         }
                     }
                 }
             }
         }
-        gui->draw_scene(game_board->board);
+        gui.draw_scene(game_board->board);
     }
     switch (winner)
     {
