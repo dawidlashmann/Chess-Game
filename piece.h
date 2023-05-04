@@ -4,6 +4,7 @@
 #include <iostream>
 #include <utility>
 #include <SFML/Graphics.hpp>
+#include <stdio.h>
 
 enum color
 {
@@ -40,6 +41,7 @@ public:
     bool moved;
     sf::Texture texture;
     sf::Sprite sprite;
+    uint8_t value;
 };
 
 #endif
