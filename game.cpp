@@ -114,11 +114,11 @@ void game::begin()
             if (winner != empty)
             {
                 std::string winner_str = (winner = white) ? "White " : "Black ";
-                gui.draw_box(winner_str + "won");
+                gui.draw_box(winner_str + "won", sf::Vector2f(gui.main_window.getSize().x / 2, gui.main_window.getSize().y / 4), sf::Vector2f(gui.main_window.getSize().x / 4, 3 * gui.main_window.getSize().y / 8));
             }
             else
             {
-                gui.draw_box("It's a draw");
+                gui.draw_box("It's a draw", sf::Vector2f(gui.main_window.getSize().x / 2, gui.main_window.getSize().y / 4), sf::Vector2f(gui.main_window.getSize().x / 4, 3 * gui.main_window.getSize().y / 8));
             }
         }
         gui.main_window.display();

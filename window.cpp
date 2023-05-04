@@ -46,8 +46,15 @@ void window::draw_scene(const std::vector<std::vector<std::shared_ptr<piece>>> &
     }
 }
 
-void window::draw_box(const std::string &text_to_be_drawn)
+void window::draw_box(const std::string &text_to_be_drawn, sf::Vector2f size, sf::Vector2f position)
 {
+    sf::RectangleShape box;
+    //box.setSize(sf::Vector2f(main_window.getSize().x / 2, main_window.getSize().y / 4));
+    box.setSize(size);
+    //box.setPosition(sf::Vector2f(main_window.getSize().x / 4, 3 * main_window.getSize().y / 8));
+    box.setPosition(position);
+    box.setFillColor(sf::Color::Blue);
+    sf::Text text;
     text.setFont(default_font);
     text.setString(text_to_be_drawn);
     text.setCharacterSize(35);
@@ -55,10 +62,6 @@ void window::draw_box(const std::string &text_to_be_drawn)
     text.setFillColor(sf::Color::White);
     text.setOrigin(sf::Vector2f(text.getLocalBounds().width / 2, text.getLocalBounds().height));
     text.setPosition(sf::Vector2f(main_window.getSize().x / 2, main_window.getSize().y / 2));
-    sf::RectangleShape box;
-    box.setSize(sf::Vector2f(main_window.getSize().x / 2, main_window.getSize().y / 4));
-    box.setFillColor(sf::Color::Blue);
-    box.setPosition(sf::Vector2f(main_window.getSize().x / 4, 3 * main_window.getSize().y / 8));
     main_window.draw(box);
     main_window.draw(text);
 }

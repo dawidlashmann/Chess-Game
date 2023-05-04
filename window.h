@@ -11,7 +11,7 @@ public:
     window(){};
     void create_window(int, const std::string &);
     void draw_scene(const std::vector<std::vector<std::shared_ptr<piece>>> &);
-    void draw_box(const std::string &);
+    void draw_box(const std::string &, sf::Vector2f, sf::Vector2f);
 
 public:
     sf::RenderWindow main_window;
@@ -20,7 +20,6 @@ public:
 private:
     std::vector<sf::RectangleShape> tiles;
     sf::Font default_font;
-    sf::Text text;
 };
 
 #endif
