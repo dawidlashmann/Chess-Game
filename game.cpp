@@ -51,6 +51,13 @@ game::game()
 
     for (auto column : game_board->board)
     {
+        for (auto piece : column)
+        {
+            piece->sprite.setPosition(sf::Vector2f(tile_size * piece->current_tile.first, tile_size * piece->current_tile.second));
+        }
+    }
+    for (auto column : game_board->board)
+    {
         for (auto tile : column)
         {
             if (tile->side == empty)
@@ -58,13 +65,6 @@ game::game()
                 tile->setTexture("chess/blank.png", tile_size);
                 tile->sprite.setColor(sf::Color(0, 0, 0, 0));
             }
-        }
-    }
-    for (auto column : game_board->board)
-    {
-        for (auto piece : column)
-        {
-            piece->sprite.setPosition(sf::Vector2f(tile_size * piece->current_tile.first, tile_size * piece->current_tile.second));
         }
     }
 }

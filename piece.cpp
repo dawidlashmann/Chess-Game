@@ -30,5 +30,6 @@ void piece::setSize(int newSize)
     float height = rect.height;
     float factor_y = newSize / height;
     float factor_x = newSize / width;
-    sprite.setScale(sf::Vector2f(factor_x, factor_y));
+    sprite.setScale(sf::Vector2f(-factor_x, -factor_y));
+    sprite.setOrigin(width, height);
 }
