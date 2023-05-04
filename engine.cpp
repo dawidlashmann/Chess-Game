@@ -2,155 +2,86 @@
 
 void engine::begin()
 {
-    // game loop
-    while (true)
+    color turn_color = white;
+    std::pair<int, int> current_tile, target_tile;
+    bool move = false;
+    bool game_ended = false;
+    while (gui->main_window->isOpen())
     {
-        // white's turn
-        std::pair<int, int> current_tile, target_tile;
-        std::pair<std::pair<int, int>, std::pair<int, int>> engine_move;
-        do
+        if (game_ended)
         {
-            system("clear");
-            // system("cls");
-            game_board->draw();
-            std::cout << "Turn number: " << turn_number << '\n';
-            std::cout << "White's turn:\n";
-            if (this->side == white)
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
             {
-                std::cout << "Thinking...\n"
-                          << std::flush;
-                
-                if(!define_moves())
-                    break;
-                engine_move = getMove();
-                current_tile = engine_move.first;
-                target_tile = engine_move.second;
-                //std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-                std::cout << '\n'
-                          << (char)(engine_move.first.first + 97) << '\n'
-                          << engine_move.first.second + 1 << '\n'
-                          << (char)(engine_move.second.first + 97) << '\n'
-                          << engine_move.second.second + 1 << '\n';
-                std::cin.ignore();
-                std::cout << "\nPress Enter to continue\n";
-                std::cin.get();
+                gui->main_window->close();
             }
-            else
-            {
-                bool siema;
-                user_click(current_tile, target_tile, white, siema);    
-            }
-
-        } while (!turn(current_tile, target_tile, white));
-
-        // check if black is checked and if so, check if he has any moves
-        if (check_(game_board->black_king_tile, game_board->black_king_tile, black))
+            continue;
+        }
+        if (turn_color == side)
         {
-            if (!has_any_moves(black))
+            if (define_moves())
             {
-                winner = white;
+                std::pair<std::pair<int, int>, std::pair<int, int>> ai_move;
+                do
+                {
+                    ai_move = getMove();
+                } while (!turn(ai_move.first, ai_move.second, side));
+
+                if (check_for_end_game(turn_color))
+                {
+                    game_ended = true;
+                }
+                turn_color = (turn_color == white) ? black : white;
+                float size_of_tile_x = gui->main_window->getSize().x / 8;
+                float size_of_tile_y = gui->main_window->getSize().y / 8;
+                (*game_board)[ai_move.second]->sprite.setPosition(sf::Vector2f(size_of_tile_x * (*game_board)[ai_move.second]->current_tile.first, size_of_tile_y * (*game_board)[ai_move.second]->current_tile.second));
+            }
+        }
+
+        sf::Event event;
+        while (gui->main_window->pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+            {
+                gui->main_window->close();
                 break;
             }
-        }
-        else if (stale_mate(black))
-        {
-            // check after each move is it's stalemate
-            winner = empty;
-            break;
-        }
-        // check if it's a draw by repetition
-        if (draw_by_repetition(white))
-        {
-            winner = empty;
-            break;
-        }
-
-        // draw the board
-        system("clear");
-        // system("cls");
-        game_board->draw();
-
-        // black's turn
-        do
-        {
-            system("clear");
-            // system("cls");
-            game_board->draw();
-            std::cout << "Turn number: " << turn_number << '\n';
-            std::cout << "Black's turn:\n";
-            if (this->side == black)
+            if (event.type == sf::Event::MouseButtonPressed && turn_color != this->side)
             {
-                std::cout << "Thinking..." << std::flush;
-                
-                if(!define_moves())
-                    break;
-                engine_move = getMove();
-                current_tile = engine_move.first;
-                target_tile = engine_move.second;
-                //std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-                std::cout << '\n'
-                          << (char)(engine_move.first.first + 97) << '\n'
-                          << engine_move.first.second + 1 << '\n'
-                          << (char)(engine_move.second.first + 97) << '\n'
-                          << engine_move.second.second + 1 << '\n';
-                std::cin.ignore();
-                std::cout << "\nPress Enter to continue\n";
-                std::cin.get();
-            }
-            else
-            {
-                bool siema;
-                user_click(current_tile, target_tile, black, siema);
-            }
-
-        } while (!turn(current_tile, target_tile, black));
-
-        // check if white is checked and if so, check if he has any moves
-        if (check_(game_board->white_king_tile, game_board->white_king_tile, white))
-        {
-            if (!has_any_moves(white))
-            {
-                winner = black;
-                break;
+                if (event.mouseButton.button == sf::Mouse::Left)
+                {
+                    if (user_click(current_tile, target_tile, turn_color, move))
+                    {
+                        if (turn(current_tile, target_tile, turn_color))
+                        {
+                            if (check_for_end_game(turn_color))
+                            {
+                                game_ended = true;
+                            }
+                            move = false;
+                            gui->avaiable_moves.clear();
+                            turn_color = (turn_color == white) ? black : white;
+                            float size_of_tile_x = gui->main_window->getSize().x / 8;
+                            float size_of_tile_y = gui->main_window->getSize().y / 8;
+                            (*game_board)[target_tile]->sprite.setPosition(sf::Vector2f(size_of_tile_x * (*game_board)[target_tile]->current_tile.first, size_of_tile_y * (*game_board)[target_tile]->current_tile.second));
+                        }
+                    }
+                }
             }
         }
-        else if (stale_mate(white))
-        {
-            // check for stalemate
-            winner = empty;
-            break;
-        }
-        // check draw by repetition
-        if (draw_by_repetition(black))
-        {
-            winner = empty;
-            break;
-        }
-
-        // draw the board
-        system("clear");
-        // system("cls");
-        game_board->draw();
-
-        turn_number++;
+        gui->draw_scene(game_board->board);
     }
-    system("clear");
-    // system("cls");
-    game_board->draw();
-
     switch (winner)
     {
     case white:
-        std::cout << "\nWHITE WON!!! - 1:0\n";
+        std::cout << "WHITE WON!!! - 1:0\n";
         break;
     case black:
-        std::cout << "\nBLACK WON!!! - 0:1\n";
+        std::cout << "BLACK WON!!! - 0:1\n";
         break;
     case empty:
-        std::cout << "\nDRAW!!! - 0.5:0.5\n";
+        std::cout << "DRAW!!! - 0.5:0.5\n";
         break;
     }
-    end();
 }
 
 bool engine::define_moves()

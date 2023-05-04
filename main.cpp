@@ -5,7 +5,7 @@
 
 int main()
 {
-    game game_;
+    engine game_(black);
     game_.begin();
 
     return 0;

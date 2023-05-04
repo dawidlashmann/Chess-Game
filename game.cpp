@@ -74,8 +74,17 @@ void game::begin()
     color turn_color = white;
     std::pair<int, int> current_tile, target_tile;
     bool move = false;
+    bool game_ended = false;
     while (gui->main_window->isOpen())
     {
+        if (game_ended)
+        {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+            {
+                gui->main_window->close();
+            }
+            continue;
+        }
         sf::Event event;
         while (gui->main_window->pollEvent(event))
         {
@@ -92,31 +101,10 @@ void game::begin()
                     {
                         if (turn(current_tile, target_tile, turn_color))
                         {
-                            color enemy_color = (turn_color == white) ? black : white;
-                            std::pair<int, int> enemy_king_tile = (turn_color == white) ? game_board->black_king_tile : game_board->white_king_tile;
-                            if (check_(enemy_king_tile, enemy_king_tile, enemy_color))
+                            if (check_for_end_game(turn_color))
                             {
-                                if (!has_any_moves(enemy_color))
-                                {
-                                    winner = turn_color;
-                                    gui->main_window->close();
-                                    break;
-                                }
+                                game_ended = true;
                             }
-                            else if (stale_mate(enemy_color))
-                            {
-                                winner = empty;
-                                gui->main_window->close();
-                                break;
-                            }
-
-                            if (draw_by_repetition(turn_color))
-                            {
-                                winner = empty;
-                                gui->main_window->close();
-                                break;
-                            }
-
                             move = false;
                             gui->avaiable_moves.clear();
                             turn_color = (turn_color == white) ? black : white;
@@ -537,5 +525,31 @@ bool game::check_(std::pair<int, int> current_tile, std::pair<int, int> target_t
     // swap back to the original board
     (*game_board)[current_tile] = current_tile_copy;
     (*game_board)[target_tile] = target_tile_copy;
+    return false;
+}
+
+bool game::check_for_end_game(color c)
+{
+    color enemy_color = (c == white) ? black : white;
+    std::pair<int, int> enemy_king_tile = (c == white) ? game_board->black_king_tile : game_board->white_king_tile;
+    if (check_(enemy_king_tile, enemy_king_tile, enemy_color))
+    {
+        if (!has_any_moves(enemy_color))
+        {
+            winner = c;
+            return true;
+        }
+    }
+    else if (stale_mate(enemy_color))
+    {
+        winner = empty;
+        return true;
+    }
+
+    if (draw_by_repetition(c))
+    {
+        winner = empty;
+        return true;
+    }
     return false;
 }

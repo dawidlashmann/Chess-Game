@@ -26,7 +26,8 @@ protected:
     bool draw_by_repetition(color);
     bool check_(std::pair<int, int>, std::pair<int, int>, color) const;
     bool is_move_legal(std::pair<int, int>, std::pair<int, int>, color) const;
-    
+    bool check_for_end_game(color);
+
 protected:
     chess_board *game_board;
     color winner;

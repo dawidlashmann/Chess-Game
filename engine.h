@@ -10,9 +10,9 @@ class engine : public game
 {
 public:
     engine(color c) : game() { side = c; };
+    virtual void begin() override;
 
 private:
-    virtual void begin() override;
     bool define_moves();
     std::pair<std::pair<int, int>, std::pair<int, int>> getMove();
     void end();
