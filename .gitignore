@@ -3,5 +3,6 @@
 *.exe
 *.json
 *.exe
-chess/
-*
+logs/
+.json
+.vscode/
