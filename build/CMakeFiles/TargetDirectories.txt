@@ -1,0 +1,3 @@
+/home/dawid/repos/chess2/build/CMakeFiles/rebuild_cache.dir
+/home/dawid/repos/chess2/build/CMakeFiles/edit_cache.dir
+/home/dawid/repos/chess2/build/CMakeFiles/chess_engine.dir

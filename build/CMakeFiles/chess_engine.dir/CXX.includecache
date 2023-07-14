@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../pieces/piece.h
+iostream
+-
+utility
+-
+SFML/Graphics.hpp
+-
+stdio.h
+-
+
+/home/dawid/repos/chess2/gui/window.cpp
+window.h
+/home/dawid/repos/chess2/gui/window.h
+
+/home/dawid/repos/chess2/gui/window.h
+memory
+-
+SFML/Graphics.hpp
+-
+piece.h
+/home/dawid/repos/chess2/gui/piece.h
+
