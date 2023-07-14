@@ -19,7 +19,7 @@ void window::create_window(int windowSize, const std::string &windowName)
             tiles.push_back(temp_rect);
         }
     }
-    default_font.loadFromFile("chess/arial.ttf");
+    default_font.loadFromFile("../chess/arial.ttf");
 }
 
 void window::draw_scene(const std::vector<std::vector<std::shared_ptr<piece>>> &board)

@@ -12,38 +12,38 @@ game::game()
     //  pawns
     for (int j = 0; j < 8; j++)
     {
-        game_board->setTile(std::make_shared<pawn>(j, 1, white, 'P', "chess/Chess_plt60.png", tile_size));
+        game_board->setTile(std::make_shared<pawn>(j, 1, white, 'P', "../chess/Chess_plt60.png", tile_size));
     }
     for (int j = 0; j < 8; j++)
     {
-        game_board->setTile(std::make_shared<pawn>(j, 6, black, 'p', "chess/Chess_pdt60.png", tile_size));
+        game_board->setTile(std::make_shared<pawn>(j, 6, black, 'p', "../chess/Chess_pdt60.png", tile_size));
     }
 
     // queen
-    game_board->setTile(std::make_shared<queen>(3, 0, white, 'Q', "chess/Chess_qlt60.png", tile_size));
-    game_board->setTile(std::make_shared<queen>(3, 7, black, 'q', "chess/Chess_qdt60.png", tile_size));
+    game_board->setTile(std::make_shared<queen>(3, 0, white, 'Q', "../chess/Chess_qlt60.png", tile_size));
+    game_board->setTile(std::make_shared<queen>(3, 7, black, 'q', "../chess/Chess_qdt60.png", tile_size));
 
     // bishops
-    game_board->setTile(std::make_shared<bishop>(2, 0, white, 'B', "chess/Chess_blt60.png", tile_size));
-    game_board->setTile(std::make_shared<bishop>(5, 0, white, 'B', "chess/Chess_blt60.png", tile_size));
-    game_board->setTile(std::make_shared<bishop>(2, 7, black, 'b', "chess/Chess_bdt60.png", tile_size));
-    game_board->setTile(std::make_shared<bishop>(5, 7, black, 'b', "chess/Chess_bdt60.png", tile_size));
+    game_board->setTile(std::make_shared<bishop>(2, 0, white, 'B', "../chess/Chess_blt60.png", tile_size));
+    game_board->setTile(std::make_shared<bishop>(5, 0, white, 'B', "../chess/Chess_blt60.png", tile_size));
+    game_board->setTile(std::make_shared<bishop>(2, 7, black, 'b', "../chess/Chess_bdt60.png", tile_size));
+    game_board->setTile(std::make_shared<bishop>(5, 7, black, 'b', "../chess/Chess_bdt60.png", tile_size));
 
     // knights
-    game_board->setTile(std::make_shared<knight>(1, 0, white, 'N', "chess/Chess_nlt60.png", tile_size));
-    game_board->setTile(std::make_shared<knight>(6, 0, white, 'N', "chess/Chess_nlt60.png", tile_size));
-    game_board->setTile(std::make_shared<knight>(1, 7, black, 'n', "chess/Chess_ndt60.png", tile_size));
-    game_board->setTile(std::make_shared<knight>(6, 7, black, 'n', "chess/Chess_ndt60.png", tile_size));
+    game_board->setTile(std::make_shared<knight>(1, 0, white, 'N', "../chess/Chess_nlt60.png", tile_size));
+    game_board->setTile(std::make_shared<knight>(6, 0, white, 'N', "../chess/Chess_nlt60.png", tile_size));
+    game_board->setTile(std::make_shared<knight>(1, 7, black, 'n', "../chess/Chess_ndt60.png", tile_size));
+    game_board->setTile(std::make_shared<knight>(6, 7, black, 'n', "../chess/Chess_ndt60.png", tile_size));
 
     // rooks
-    game_board->setTile(std::make_shared<rook>(0, 0, white, 'R', "chess/Chess_rlt60.png", tile_size));
-    game_board->setTile(std::make_shared<rook>(7, 0, white, 'R', "chess/Chess_rlt60.png", tile_size));
-    game_board->setTile(std::make_shared<rook>(0, 7, black, 'r', "chess/Chess_rdt60.png", tile_size));
-    game_board->setTile(std::make_shared<rook>(7, 7, black, 'r', "chess/Chess_rdt60.png", tile_size));
+    game_board->setTile(std::make_shared<rook>(0, 0, white, 'R', "../chess/Chess_rlt60.png", tile_size));
+    game_board->setTile(std::make_shared<rook>(7, 0, white, 'R', "../chess/Chess_rlt60.png", tile_size));
+    game_board->setTile(std::make_shared<rook>(0, 7, black, 'r', "../chess/Chess_rdt60.png", tile_size));
+    game_board->setTile(std::make_shared<rook>(7, 7, black, 'r', "../chess/Chess_rdt60.png", tile_size));
 
     // kings
-    game_board->setTile(std::make_shared<king>(4, 0, white, 'K', "chess/Chess_klt60.png", tile_size));
-    game_board->setTile(std::make_shared<king>(4, 7, black, 'k', "chess/Chess_kdt60.png", tile_size));
+    game_board->setTile(std::make_shared<king>(4, 0, white, 'K', "../chess/Chess_klt60.png", tile_size));
+    game_board->setTile(std::make_shared<king>(4, 7, black, 'k', "../chess/Chess_kdt60.png", tile_size));
     game_board->white_king_tile.first = 4;
     game_board->white_king_tile.second = 0;
     game_board->black_king_tile.first = 4;
@@ -62,7 +62,7 @@ game::game()
         {
             if (tile->side == empty)
             {
-                tile->setTexture("chess/blank.png", tile_size);
+                tile->setTexture("../chess/blank.png", tile_size);
                 tile->sprite.setColor(sf::Color(0, 0, 0, 0));
             }
         }
@@ -207,7 +207,7 @@ bool game::turn(std::pair<int, int> current_tile, std::pair<int, int> target_til
         if ((*game_board)[target_tile]->letter == 'P' || (*game_board)[target_tile]->letter == 'p')
         {
             char temp_letter = (c == white) ? 'Q' : 'q';
-            const std::string temp_filename = (c == white) ? "chess/Chess_qlt60.png" : "chess/Chess_qdt60.png";
+            const std::string temp_filename = (c == white) ? "../chess/Chess_qlt60.png" : "../chess/Chess_qdt60.png";
             if (target_tile.second == 7 || target_tile.second == 0)
                 (*game_board)[target_tile] = std::make_shared<queen>(target_tile.first, target_tile.second, c, temp_letter, temp_filename, gui.main_window.getSize().x / 8);
             black_past_positions.clear();
