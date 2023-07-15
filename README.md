@@ -1,14 +1,25 @@
 # Chess-Game
-Fully functional chess game with a basic chess engine.
+### Fully functional chess game with a basic chess engine.
 
-The game itself is a fully functional chess game, intended to work just like the game on chess.com.
-It is worth noting, that en passant is not implemented yet, but everything besides that should work just fine.
+## About
+This project was aiming to reconstruct chess game as it is played on *[chess.com](https://www.chess.com)*. 
 
-The chess engine currently functions as a random, legal move generator, but I am planning on advancing it in the future with various algorithms.
-The game is 100% inside a terminal, but I am planning on build a GUI using SFML/OpenGL.
+It first started as a console game, but later on I decided to implement a GUI, which is written in `SFML`.
 
-The code is strictly OOP as I wanted to better myself in it.
+Based on the `game` functions used in a 2 player game, a simple chess engine was then added. It was later on, that it was enhanced with basic function to evaluate the current and future positions. 
+Despite this engine not being "smart", it has some logic behind it, and it's development will be continued.
 
-Please note that the chess engine code is not yet commented, so it may confuse some readers.
+## Usability
+The game is 100% playable, with some rules missing (the most important being en passant).
+
+PvP mode (or PvE), can be chosen inside `main.cpp`.
+
+## GUI
+The GUI is shown below, with the piece's icons as well as tiles modifiable, by uploading an image to chess directory.
+
+![Alt text](image.png)
+
+
+
 
 If you used my code and found any bugs, or have genereal tips on how to better it, please let me know any way possible!
