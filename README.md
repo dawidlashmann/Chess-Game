@@ -16,5 +16,7 @@ PvP mode (or PvE), can be chosen inside `main.cpp`.
 
 ## GUI
 The GUI is shown below, with the piece's icons as well as tiles modifiable, by uploading an image to chess directory.
+![image](https://github.com/dawidlashmann/Chess-Game/assets/115370220/51d9659c-4fa4-44ff-99a5-1b8b8ec7ef45)
+
 
 If you used my code and found any bugs, or have genereal tips on how to better it, please let me know any way possible!
